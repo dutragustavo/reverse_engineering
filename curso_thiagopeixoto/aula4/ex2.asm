@@ -14,6 +14,10 @@ fatstr:
 	db "Fatorial de %d", 0x0a, 0x00
 promptstr:
 	db "Insira o valor para ser calculado o fatorial", 0x0a, 0x00
+
+intout:
+	db "%d", 0x0a, 0x00
+
 intfatorial:
 	dd 0
 
@@ -30,23 +34,29 @@ _start:
 	xor rax, rax
 	call scanf
 	mov rcx, [intfatorial]
+	push rcx
+	mov rbx, 1
 loop1:
-	mov rbx, rcx
-	sub rbx, 1
 	mov rax, rcx
 	mul rbx
-	;...
-	push rcx
-	mov	rdi, tabstr
+	mov rbx, rax
+	sub rcx, 1
+	cmp rcx, 0
+	jnz loop1
+
+	pop rcx
+	push rbx
+	mov	rdi, fatstr
 	mov	rsi, rcx
 	xor	rax, rax
 	call printf
-	pop rcx
-	sub rcx, 1
-	cmp rcx, rcx
-	jnz loop1
+	pop rbx
 
-exit:
+	mov	rdi, intout
+	mov	rsi, rbx
+	xor	rax, rax
+	call printf
+
 	mov	rax, 0x3c
 	mov	rdi, 0x00
 	syscall
