@@ -1,0 +1,17 @@
+#include <Windows.h>
+
+int main()
+{
+	MessageBeep(0xFFFFFFFF);
+	return 0;
+}
+
+/*
+ASM
+main:
+    push 0xFFFFFFFF
+    call MessageBeep
+    xor  eax,eax
+    retn
+*/
+
